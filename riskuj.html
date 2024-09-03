@@ -1,0 +1,809 @@
+<html>
+    <head>
+        <title>Riskuj</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>body{
+            margin: 0;
+            font-family: Calibri;
+        }
+        .moznostiselector{
+            width: 30%;
+            height: 60%;
+            top: 10%;
+            right: 20%;
+            position: fixed;
+            overflow-y: scroll;
+            background-color: white;
+            z-index: var(--selectorindex);
+        
+        }
+        .barvySelector{
+            border: 0.1em solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            margin-bottom: 0.05em;
+        }
+        .barvySelector:hover{
+            border-color: white;
+        }
+        .pridatodebratTymy{
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            width: 50%; 
+            height: 100%; 
+            border: solid;
+            background-color: white;
+        }
+        .pridatodebratTymy:hover{
+            background-color: white;
+            color: white;
+        }
+        .hra{
+            position: fixed;
+            left: 0;
+            width: 80%;
+            height: 100%;
+            font-size: 3.5em;
+            background-color: white;
+            text-align: center;
+        }
+        .tymy{
+            position: fixed;
+            right: 0;
+            width: 20%;
+            height: 100%;
+            background-color: var(--colorTYMY);
+        
+        }
+        .vyber{
+            width: 30%;
+            height: 5%;
+            font-size: 30px;
+        }
+        .potvrzovac_button{
+            width: 14%;
+            height: 5%;
+            background-color: white;
+            font-size: 30px;
+        }
+        .potvrzovac_button:hover{
+            width: 14%;
+            height: 5%;
+            background-color: black;
+            color: white;
+            font-size: 30px;
+        }
+        .hlavnipole{
+            position: relative;
+            left: 2%;
+            top: 2%;
+            width: 95%;
+            height: 95%;
+            background-color: white;
+        }
+        .vybertema{
+            display: flex;
+            justify-content: center; 
+            align-items: center; 
+            width: var(--procentaOtazek);
+            height: 100%;
+            font-size: 0.75em;
+            text-align: center;
+            border: solid;
+        }
+        .vybertema:hover{
+            font-size: 1em;
+            color: green;
+            border-color: green;
+        }
+        .radek{
+            display: flex;
+            height: 14.9%;
+            width: 100%;
+        }
+        .vybertymy{
+            text-align: center;
+            width: 100%;
+            height: 12%;
+            border: solid;
+            overflow-y: hidden;
+            overflow-x: hidden;
+            
+        }
+        .ZobrazenaOtazka{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 5%;
+            position: relative;
+            width: 100%;
+            height: 40%;
+            font-size: 1.5em;
+        }
+        .tlacitkoReseni{
+            position: fixed;
+            bottom: 0%;
+            left: 0%;
+            width: 80%;
+            height: 25%;
+            font-size: 30px;
+        }
+        .Reseni{
+            position: fixed;
+            bottom: 20%;
+            left: 0%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80%;
+            height: 10%;
+            font-size: 50px;
+            z-index: 2;
+        }
+        .tlacitkoSpravneDobre{
+            text-align: center;
+            width: 50%;
+            height: 100%;
+            font-size: 30px;
+        }
+        .ZobrazenaOtazkaImg{
+            text-align: center;
+            margin-top: 1%;
+            position: relative;
+            width: 100%;
+            height: 40%;
+            font-size: 0.9em;
+        }
+        .progressBar{
+            position: fixed;
+            left: 0%;
+            bottom: 25%;
+            width: var(--progressWidth);
+            height: 1.1em;
+            background-color: var(--progressColor);
+            z-index: 10;
+            text-align: var(--progressAlign);
+            font-size: 0.7em;
+        }
+        .tlacitkaReseni{
+            position: fixed;
+            bottom: 0%;
+            width: 80%;
+            left: 0%;
+            height: 20%;
+        }
+        .vyprseniCasu{
+            position: fixed;
+            bottom: 10%;
+            left: 0%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80%;
+            height: 10%;
+            font-size: 50px;
+        }
+        .barvyKrizek{
+            position: fixed; 
+            width: 1em; 
+            height: 1em; 
+            right: 20%; 
+            background-color: grey; 
+            color: white; 
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+            font-size: 3em;
+        }
+        .barvyKrizek:hover{
+            border: solid 1px black;
+            background-color: white;
+            color: black;
+        } </style>
+        <script>
+
+let faze = 0;
+let data = 0;
+let tymI = 1;
+const barvy = [
+    "Pleťová","bisque",
+    "Žlutá","yellow",
+    "Oranžová", "orange",
+    "Hnědá", "sienna", 
+    "Oranžově-červená","orangered",
+    "Červená","red",
+    "Rajčatová","tomato",
+    "Růžová","violet",
+    "Orchidejová","orchid",
+    "Fialová", "purple", 
+    "BlueViolet","blueviolet",
+    "Tmavě modrá", "darkblue" ,
+    "Modrá", "blue",
+    "Teal", "teal",
+    "SlateGrey", "slategrey",
+    "Nebesky modrá", "skyblue", 
+    "Aquamarine","aquamarine",
+    "Světle zelená", "greenyellow", 
+    "Trávově zelená", "lawngreen", 
+    "Zelená", "green", 
+];
+let barvyTymy = [barvy[1]];
+let statistikyDobre = [0];
+let statistikySpatne = [0];
+let bodyTymy;
+let tymy = [`<div class="vybertymy" style="font-size: 50px; background-color: ${barvyTymy[tymI - 1]}; display: flex; justify-content: center; align-items: center;">${tymI}. <input style="width: 60%; height: 50%; font-size: 25px;" id="tym${tymI}" value="tým${tymI}"></input><button style="width: 10%; height: 50%;font-size: 25px;" onclick="zmenaBarvyTymu(${tymI})">#</button></div>`];
+const pridaniodebranibuttons = `<div style="display: flex; width: 100%; height: 8%;">
+    <div class="pridatodebratTymy" onclick="pridanitymu()" style="background-color: greenyellow; display: flex; justify-content: center; align-items: center; width: 50%; height: 100%; border: solid;">Přidat</div>
+    <div class="pridatodebratTymy" onclick="odebranitymu()" style="background-color: red; display: flex; justify-content: center; align-items: center; width: 50%; height: 100%; border: solid;">Odebrat</div>
+    </div>`;
+let aktPoradiTym = 0;
+document.addEventListener("DOMContentLoaded", function all() {
+    document.documentElement.style.setProperty('--colorTYMY', String('white'));
+    document.querySelector(`.hra`).innerHTML = `<div style="position:fixed; width: 100%; height: 100%;">
+        <div style="margin-top: 20%;width: 100%; height: 5%; display: flex; align-items: center; justify-content: center; font-size: 0.7em;">Zvolení datového souboru</div>
+        <div style="margin-top: 1%;width: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.7em;"><input type="file" class="vyber" id="zvolenisouboru"></input></div>
+        <div style="margin-top: 1%;width: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.7em;"><button class="potvrzovac_button" onclick="kontrolasouboru()">Potvrdit</button></div>
+    </div>`;
+});
+let poradiTymuTabulkaKonec;
+function kontrolasouboru(){
+    const fileInput = document.getElementById('zvolenisouboru');
+    const file = fileInput.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            try {
+                data = JSON.parse(event.target.result);
+                faze = 1;
+                nastavovaniPoctuTematAMoznosti();
+                vybertymu();
+            } catch (error) {
+                console.error('Error při parsováníJSON:', error);
+            }
+        };
+        reader.onerror = function(event) {
+            console.error('Error při čtení souboru:', event);
+        };
+        reader.readAsText(file);
+    } else {
+        console.error('Nevybrán žádný soubor');
+    }
+}
+
+let HlavniMnozstviTemat = 0;
+let VsechnyMoznostiOtazek = [];
+function nastavovaniPoctuTematAMoznosti(){
+    HlavniMnozstviTemat = 0;
+    VsechnyMoznostiOtazek = [];
+    let temataNum = 1;
+    while(data[`tema${temataNum}`] != null){
+        HlavniMnozstviTemat = HlavniMnozstviTemat + 1;
+        temataNum = temataNum + 1;
+    }
+    document.documentElement.style.setProperty('--procentaOtazek', String(`${100 / HlavniMnozstviTemat}%`));
+    let odpocitavac1 = 1;
+    while(odpocitavac1 <= HlavniMnozstviTemat){
+        VsechnyMoznostiOtazek.push([]);
+        odpocitavac1 = odpocitavac1 + 1;
+    }
+    let odpocitavac2 = 1;
+    while(odpocitavac2 <= HlavniMnozstviTemat){
+        let temaMoznosti = `tema${odpocitavac2}`;
+        let odpocitavac3 = 1;
+        let otazkaMoznosti;
+        while(odpocitavac3 <= 6){
+            if(odpocitavac3 === 1){
+                otazkaMoznosti = `speacialni_otazka`;
+            }else{
+                otazkaMoznosti = `otazka_${odpocitavac3 - 1}`;
+            }
+            VsechnyMoznostiOtazek[odpocitavac2 - 1].push([]);
+            let odpocitavac4 = 2;
+            let pocetMoznosti = 0;
+            while(data[temaMoznosti][otazkaMoznosti][odpocitavac4] != null){
+                pocetMoznosti = pocetMoznosti + 1;
+                odpocitavac4 = odpocitavac4 + 2;
+            }
+            let odpocitavac5 = 1;
+            while(odpocitavac5 <= pocetMoznosti){
+                VsechnyMoznostiOtazek[odpocitavac2 - 1][odpocitavac3 - 1].push(odpocitavac5);
+                odpocitavac5 = odpocitavac5 + 1;
+            }
+            odpocitavac3 = odpocitavac3 + 1;
+        }
+        odpocitavac2 = odpocitavac2 + 1;
+    }
+}
+function menicBarvy(tym, barvaRight){
+    document.documentElement.style.setProperty('--selectorindex', String('-1'));
+    document.querySelector(".moznostiselector").innerHTML = "";
+    barvyTymy [tym - 1] = barvy[barvaRight];
+    cleninka = `tym${tym}`;
+    tymy[tym - 1] = `<div class="vybertymy" style="font-size: 50px; background-color: ${barvyTymy[tym - 1]}">${tym}. <input style="width: 60%; height: 50%; font-size: 25px;" id="tym${tym}"value="${document.getElementById(cleninka).value}"></input><button style="width: 10%; height: 50%;font-size: 25px;" onclick="zmenaBarvyTymu(${tym})">#</button></div>`;
+    zobrazenitymu();
+}
+function zmenaBarvyTymu(tym){
+    document.documentElement.style.setProperty('--selectorindex', String('5'));
+    let bbb = 1;
+    let barvičky = ` `;
+    if(!barvyTymy.includes(barvy[bbb])){
+        barvičky = `<div class="barvySelector"  style="background-color: ${barvy[bbb]}" onclick="menicBarvy(${tym},${bbb})">${barvy[bbb - 1]}</div>`;
+    }
+    while(bbb < (barvy.length - 1)){
+        bbb = bbb + 2;
+        if(!barvyTymy.includes(barvy[bbb])){
+            barvičky = barvičky + `<div class="barvySelector" style="background-color: ${barvy[bbb]}" onclick="menicBarvy(${tym},${bbb})">${barvy[bbb - 1]}</div>`;
+        }
+    }
+    document.querySelector(".moznostiselector").innerHTML = `<div class="barvyKrizek" onclick="OpravdovaZmenaBarvyTymu()">×</div>${barvičky}`;
+}
+function vybertymu(){
+    document.documentElement.style.setProperty('--colorTYMY', String('grey'));
+    document.querySelector(`.hra`).innerHTML = `
+    <div style="margin-top: 1%;width: 100%; text-align: center; font-size: 0.7em;">
+    <strong>Pravidla hry</strong><br>
+    Každý tým ve svém kole si vybere pole na kterém je vyzobrazen počet bodů (${data["tema1"]["otazka_1"][0]}/${data["tema1"]["otazka_2"][0]}/${data["tema1"]["otazka_3"][0]}/${data["tema1"]["otazka_4"][0]}/${data["tema1"]["otazka_5"][0]})
+    za správnou odpověď. Při správné odpovědi se pole zabarví barvou týmu a uzavře se. <br>
+    Každé pole má různý počet možných otázek, takže když někdo odpoví na některém poli špatně, další kdo si ho vybere už znovu nedostane stejnou otázku. Když v poli se spotřebují všechny možné otázky, pole se uzavře a zabarví černě.<br>
+    Jakmile se se v sloupci uzavřou všechna pole s čísly, odemkne se vám v sloupci nové pole, to v kterém je napsán název tématu, který je za ${data["tema1"]["speacialni_otazka"][0]} bodů.<br>
+    Hra končí jakmile se uzavřou všechna pole a vítězí tým, který má nejvíce bodů. 
+    </div>
+    <div style="margin-top: 1%;width: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.7em;"><strong>Zakládání týmů</strong></div>
+    <div style="margin-top: 1%;width: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.7em;">Odpočet : <input id="cas" style="text-align: center; height: 1.5em; width: 2em; font-size: 1em;" value="0"></input> vteřin</div>
+    <div style="margin-top: 1%;width: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.7em;"><button class="potvrzovac_button" onclick="zacleneniTymu()" stl=>Potvrdit</button></div>
+    `;
+    document.querySelector(`.tymy`).innerHTML = `
+    ${tymy}
+    ${pridaniodebranibuttons}
+    `;
+}
+function odebranitymu(){
+    if(tymI !== 1){
+        tymI = tymI - 1;
+        tymy.pop();
+        barvyTymy.pop();
+        zobrazenitymu();
+        statistikyDobre.pop();
+        statistikySpatne.pop();
+    }
+}
+function pridanitymu(){
+    let tymovaI = 0; 
+    tymI = tymI + 1;    
+    if(tymI < 8){
+        if(barvyTymy.includes(barvy[(tymI * 2) - 1])){
+            let pocitadlo = tymI + 1;
+            while(barvyTymy.includes(barvy[(pocitadlo * 2) - 1])){
+                pocitadlo = pocitadlo + 1;
+            }
+            barvyTymy.push(barvy[(pocitadlo * 2) - 1]);
+        }else{
+            barvyTymy.push(barvy[(tymI * 2) - 1]);
+        }
+        tymy.push(`<div class="vybertymy" style="font-size: 50px; background-color: ${barvyTymy[tymI - 1]}; display: flex; justify-content: center; align-items: center;">${tymI}. <input style="width: 60%; height: 50%; font-size: 25px;" id="tym${tymI}"value="tým${tymI}"></input><button style="width: 10%; height: 50%;font-size: 25px;" onclick="zmenaBarvyTymu(${tymI})">#</button></div>`);
+        while(tymovaI < tymI -1){
+            cleninka = `tym${tymovaI + 1}`;
+            tymy[tymovaI] = `<div class="vybertymy" style="font-size: 50px; background-color: ${barvyTymy[tymovaI]}; display: flex; justify-content: center; align-items: center;">${tymovaI + 1}. <input style="width: 60%; height: 50%; font-size: 25px;" id="tym${tymovaI + 1}"value="${document.getElementById(cleninka).value}"></input><button style="width: 10%; height: 50%;font-size: 25px;" onclick="zmenaBarvyTymu(${tymovaI + 1})">#</button></div>`;
+            tymovaI = tymovaI + 1;
+        }
+        tymovaI = 0; 
+        statistikyDobre.push(0);
+        statistikySpatne.push(0);
+        zobrazenitymu();
+    }else{
+        tymI = 7;
+    }
+}
+function zobrazenitymu(){
+    let tymZ = 1;
+    if(faze > 1){
+        if(aktPoradiTym === tymZ){
+            tymy[tymZ - 1] = `<div class="vybertymy" style="font-size: 50px;">${tymZ}. ${bodyTymy[0]} - ${bodyTymy[1]}</div>`;
+        }else{
+            tymy[tymZ - 1] = `<div class="vybertymy" style="font-size: 50px;">${tymZ}. ${bodyTymy[0]} - ${bodyTymy[1]}</div>`;
+        }
+    }
+    let tymyzobraz;
+    if(faze === 1){
+        tymyzobraz = tymy[0];
+    }else{
+        if(aktPoradiTym === tymZ){
+            tymy[tymZ - 1] = `<div class="vybertymy" style="font-size: 50px;  background-color: white; border-color: red; border-width: 15px; width: 93.5%">${bodyTymy[2 * (0)]} <br>${bodyTymy[(2 * (0)) + 1]} b</div>`;
+        }else{
+            tymy[tymZ - 1] = `<div class="vybertymy" style="font-size: 50px;  background-color: ${barvyTymy[0]}"> ${bodyTymy[2 * (0)]} <br>${bodyTymy[(2 * (0)) + 1]} b</div>`;
+        }
+        tymyzobraz = tymy[0];
+    }
+    while(tymZ < (tymI )){
+        if(faze > 1){
+            if(aktPoradiTym === (tymZ + 1)){
+                tymy[tymZ] = `<div class="vybertymy" style="font-size: 50px; background-color: white; border-color: red; border-width: 15px; width: 94%">${bodyTymy[2 * (tymZ)]}<br>${bodyTymy[(2 * (tymZ)) + 1]} b</div>`;
+            }else{
+                tymy[tymZ] = `<div class="vybertymy" style="font-size: 50px; background-color: ${barvyTymy[tymZ]}"> ${bodyTymy[2 * (tymZ)]}<br>${bodyTymy[(2 * (tymZ)) + 1]} b</div>`;
+            }
+        }
+        tymyzobraz = tymyzobraz + tymy[tymZ];
+        tymZ = tymZ + 1;
+    }
+    if(faze === 1){
+        document.querySelector(`.tymy`).innerHTML = `${tymyzobraz}${pridaniodebranibuttons}`;
+    }else{
+        document.querySelector(`.tymy`).innerHTML = `${tymyzobraz}`
+    }
+}
+function zacleneniTymu(){
+    let cleninka = 1;
+    odpocetTime = parseInt(document.getElementById("cas").value);
+    bodyTymy = [document.getElementById(`tym${cleninka}`).value, 0];
+    tymy[cleninka - 1] = `<div class="vybertymy" style="font-size: 50px;">${cleninka}. ${bodyTymy[0]} - ${bodyTymy[1]}</div>`;
+    while (cleninka < tymI){
+        cleninka = cleninka + 1;
+        bodyTymy.push(document.getElementById(`tym${cleninka}`).value);
+        bodyTymy.push(0);
+        tymy[cleninka - 1] = `<div class="vybertymy" style="font-size: 50px;">${cleninka}. ${bodyTymy[2 * (cleninka - 1)]} - ${bodyTymy[(2 * (cleninka - 1)) + 1]}</div>`;
+    }
+    faze = 2;
+    aktPoradiTym = 1;
+    zobrazenitymu();
+    zobrazeniotazek();
+}
+function OpravdovaZmenaBarvyTymu(){
+    document.querySelector('.moznostiselector').innerHTML = ` `;
+    document.documentElement.style.setProperty('--selectorindex', String(`-1`));
+} 
+function zobrazeniotazek(){
+    let i = 1;
+    let z = 1;
+    let slovo = `tema${i}`;
+    let slovob = `otazka_${z}`;
+    let temata ;
+    let otazky ;
+    if(data[slovo]["otazka_1"][1]&&data[slovo]["otazka_2"][1]&&data[slovo]["otazka_3"][1]&&data[slovo]["otazka_4"][1]&&data[slovo]["otazka_5"][1]){
+        if(data[slovo]["speacialni_otazka"][1]){
+            if(data[slovo]["speacialni_otazka"][data[slovo]["speacialni_otazka"].length -1] > 0){
+                temata = `<div class="vybertema" style="background-color: ${barvyTymy[data[slovo]["speacialni_otazka"][data[slovo]["speacialni_otazka"].length -1]-1]}; color: white;" onclick="zobrazOtazku(${i}, 0)">${data[slovo]["nazev_tematu"]}</div>`
+            }else{
+                temata = `<div class="vybertema" style="background-color: black; color: white;" onclick="zobrazOtazku(${i}, 0)">${data[slovo]["nazev_tematu"]}</div>`;
+            }
+        }else{
+            temata = `<div class="vybertema" onclick="zobrazOtazku(${i}, 0)">${data[slovo]["nazev_tematu"]}</div>`;
+        }
+    }else{
+        temata = `<div class="vybertema">${data[slovo]["nazev_tematu"]}</div>`;
+    }
+    if(data[slovo][slovob][1]){
+ 
+        if(data[slovo][slovob][data[slovo][slovob].length -1] > 0){
+            otazky = `<div class="radek"><div class="vybertema" style="background-color: ${barvyTymy[data[slovo][slovob][data[slovo][slovob].length -1]-1]}; color: white;"onclick="zobrazOtazku(${i}, ${z})">${data[slovo][slovob][0]}</div>`;
+        }else{
+            otazky = `<div class="radek"><div class="vybertema" style="background-color: black; color: white;"onclick="zobrazOtazku(${i}, ${z})">${data[slovo][slovob][0]}</div>`;
+        }
+    }else{        
+        otazky = `<div class="radek"><div class="vybertema" onclick="zobrazOtazku(${i}, ${z})">${data[slovo][slovob][0]}</div>`;
+    }
+    while (i < HlavniMnozstviTemat){
+        i = i + 1;
+        slovo = `tema${i}`;
+        if(data[slovo]["otazka_1"][1]&&data[slovo]["otazka_2"][1]&&data[slovo]["otazka_3"][1]&&data[slovo]["otazka_4"][1]&&data[slovo]["otazka_5"][1]){
+            if(data[slovo]["speacialni_otazka"][1]){
+                if(data[slovo]["speacialni_otazka"][data[slovo]["speacialni_otazka"].length -1] > 0){
+                    temata = temata +`<div class="vybertema" style="background-color: ${barvyTymy[data[slovo]["speacialni_otazka"][data[slovo]["speacialni_otazka"].length -1]-1]}; color: white;" onclick="zobrazOtazku(${i}, 0)">${data[slovo]["nazev_tematu"]}</div>`
+                }else{
+                    temata = temata +`<div class="vybertema" style="background-color: black; color: white;" onclick="zobrazOtazku(${i}, 0)">${data[slovo]["nazev_tematu"]}</div>`;
+                }
+            }else{
+                temata = temata + `<div class="vybertema" onclick="zobrazOtazku(${i}, 0)">${data[slovo]["nazev_tematu"]}</div>`;
+            }
+        }else{
+            temata = temata + `<div class="vybertema">${data[slovo]["nazev_tematu"]}</div>`;
+        }
+    }
+    i = 2;
+    while (z < 6){
+        while (i < HlavniMnozstviTemat + 1){
+            slovo = `tema${i}`;
+            slovob = `otazka_${z}`;
+            if(data[slovo][slovob][1]){
+                if(data[slovo][slovob][data[slovo][slovob].length -1] > 0){
+                    otazky = otazky + `<div style=" background-color: ${barvyTymy[data[slovo][slovob][data[slovo][slovob].length -1]-1]}; color: white;"class="vybertema" onclick="zobrazOtazku(${i}, ${z})">${data[slovo][slovob][0]}</div>`;
+                }else{
+                    otazky = otazky + `<div style=" background-color: black; color: white;"class="vybertema" onclick="zobrazOtazku(${i}, ${z})">${data[slovo][slovob][0]}</div>`;
+                }
+            }else{
+                otazky = otazky + `<div class="vybertema" onclick="zobrazOtazku(${i}, ${z})">${data[slovo][slovob][0]}</div>`;
+            }
+            i = i + 1;
+        }
+        otazky = otazky + `</div><div class="radek">`
+        z = z + 1;
+        i = 1;
+    }
+    i = 1;
+    z = 1;
+    document.querySelector(`.hra`).innerHTML = `
+    <div class="hlavnipole">
+        <div class="radek" style="height: 25%;">${temata}</div>
+        ${otazky}</div>
+    </div>
+    `;
+    let www = 1;
+    while((data[`tema${www}`]["speacialni_otazka"][1]&&data[`tema${www}`]["otazka_1"][1]&&data[`tema${www}`]["otazka_2"][1]&&data[`tema${www}`]["otazka_3"][1]&&data[`tema${www}`]["otazka_4"][1]&&data[`tema${www}`]["otazka_5"][1])){
+        if(www < HlavniMnozstviTemat){
+            www = www + 1;
+        }else if(www === HlavniMnozstviTemat){
+            konecnaFunkce();
+            break;
+        }
+    }
+    www = 1;
+} 
+let statistikaKonec;
+function konecnaFunkce() {
+    poradiTymuTabulkaKonec = [];
+    statistikaKonec = [];
+    pocetTymu = bodyTymy.length / 2;
+    while((bodyTymy.length / 2) > 0){
+        let kkk = 1;
+        let ooo = 1;
+        let provizorko = bodyTymy[1];
+        while(kkk < bodyTymy.length){
+            if(provizorko < bodyTymy[kkk]){
+                provizorko = bodyTymy[kkk];
+                ooo = kkk;
+            }
+            kkk = kkk + 2;
+        }
+        kkk = 1;
+        poradiTymuTabulkaKonec.push(bodyTymy[ooo - 1]);
+        statistikaKonec.push(statistikyDobre[((ooo - 1)/2)]);
+        statistikaKonec.push(statistikySpatne[((ooo - 1)/2)]);
+        poradiTymuTabulkaKonec.push(bodyTymy[ooo]);
+        statistikyDobre[((ooo - 1)/2)] = statistikyDobre[statistikyDobre.length - 1]; 
+        statistikySpatne[((ooo - 1)/2)] = statistikySpatne[statistikySpatne.length - 1];
+        statistikyDobre.pop(); statistikySpatne.pop();
+        bodyTymy[ooo] = bodyTymy[bodyTymy.length - 1];
+        bodyTymy[ooo - 1] = bodyTymy[bodyTymy.length - 2];
+        bodyTymy.pop();bodyTymy.pop();
+    }
+    let aaa = 1;
+    let poradi = 0;
+    let zobrazko = `<div style="width: 100%; text-align: center; margin-bottom: 0.25em;">${aaa}. ${poradiTymuTabulkaKonec[poradi]} <span style="font-size: 0.75em;">- ${poradiTymuTabulkaKonec[poradi + 1]} bodů - ${statistikaKonec[poradi]} správně - ${statistikaKonec[poradi + 1]} špatně</span></div>`;
+    while(aaa < pocetTymu){
+        aaa = aaa + 1;
+        poradi = poradi + 2;
+        zobrazko = zobrazko + `<div style="width: 100%; text-align: center; margin-bottom: 0.25em;">${aaa}. ${poradiTymuTabulkaKonec[poradi]} <span style="font-size: 0.75em;">- ${poradiTymuTabulkaKonec[poradi + 1]} bodů - ${statistikaKonec[poradi]} správně - ${statistikaKonec[poradi + 1]} špatně</span></div>`;
+    }
+    document.querySelector(`.hra`).innerHTML = `
+    <div class="hlavnipole" >
+        <div style="width: 100%; text-align: center;">KONEC</div>${zobrazko}
+    </div>
+    `;
+}
+let timeSpoustec;
+function zobrazOtazku(temaNum, otaazkaNum){
+    let thema = `tema${temaNum}`;
+    let druhOtazky;
+    let othazka;
+    if(otaazkaNum === 0){
+        othazka = `speacialni_otazka`;
+    }else{
+        othazka = `otazka_${otaazkaNum}`;
+    }
+    if(data[thema][othazka][1] === false){
+        let odpocitavac4 = 2;
+        let pocetMoznosti = 0;
+        while(data[thema][othazka][odpocitavac4] != null){
+            pocetMoznosti = pocetMoznosti + 1;
+            odpocitavac4 = odpocitavac4 + 2;
+        }
+        druhOtazky = Math.floor(Math.random() * pocetMoznosti) + 1;
+        let imageUrl;
+        let index = VsechnyMoznostiOtazek[temaNum - 1][otaazkaNum].indexOf(druhOtazky);
+        if (index > -1){
+            VsechnyMoznostiOtazek[temaNum - 1][otaazkaNum].splice(index, 1);
+            if(VsechnyMoznostiOtazek[temaNum - 1][otaazkaNum].length === 0){
+                data[thema][othazka][1] = true;
+            }
+            if(data["povoleniObrazku"] === true){
+                imageUrl = `${data["slozkaObrazku"]}/${temaNum}${otaazkaNum}${druhOtazky}.jpeg`;
+                let imga = new Image();
+                imga.onload = function() {
+                    document.querySelector(`.hra`).innerHTML = `<div class="ZobrazenaOtazkaImg"><a>${data[thema][othazka][(2 * druhOtazky)]}</a><br><img style="max-height: 10.5em;" src="${imga.src}"/></div><div class="progressBar"></div> <button class="tlacitkoReseni" onclick="zobrazOdpoved(${temaNum}, ${otaazkaNum}, ${druhOtazky})">Zobrazení odpovědi</button>`;
+                    casovacNastavovatko(temaNum, otaazkaNum, druhOtazky);
+                };
+                imga.onerror = function() {
+                    imageUrl = `${data["slozkaObrazku"]}/${temaNum}${otaazkaNum}${druhOtazky}.jpg`;
+                    let imgb = new Image();
+                    imgb.onload = function() {
+                        document.querySelector(`.hra`).innerHTML = `<div class="ZobrazenaOtazkaImg"><a>${data[thema][othazka][(2 * druhOtazky)]}</a><br><img style="max-height: 10.5em;" src="${imgb.src}"/></div><div class="progressBar"></div> <button class="tlacitkoReseni" onclick="zobrazOdpoved(${temaNum}, ${otaazkaNum}, ${druhOtazky})">Zobrazení odpovědi</button>`;
+                        casovacNastavovatko(temaNum, otaazkaNum, druhOtazky);
+                    };
+                    imgb.onerror = function() {
+                        imageUrl = `${data["slozkaObrazku"]}/${temaNum}${otaazkaNum}${druhOtazky}.png`;
+                        let imgc = new Image();
+                        imgc.onload = function() {
+                            document.querySelector(`.hra`).innerHTML = `<div class="ZobrazenaOtazkaImg"><a>${data[thema][othazka][(2 * druhOtazky)]}</a><br><img style="max-height: 10.5em;" src="${imgc.src}"/></div><div class="progressBar"></div> <button class="tlacitkoReseni" onclick="zobrazOdpoved(${temaNum}, ${otaazkaNum}, ${druhOtazky})">Zobrazení odpovědi</button>`;
+                            casovacNastavovatko(temaNum, otaazkaNum, druhOtazky);
+                        };
+                        imgc.onerror = function() {
+                            document.querySelector(`.hra`).innerHTML = `<div class="ZobrazenaOtazka"><a>${data[thema][othazka][(2 * druhOtazky)]}</a></div><div class="progressBar"></div> <button class="tlacitkoReseni" onclick="zobrazOdpoved(${temaNum}, ${otaazkaNum}, ${druhOtazky})">Zobrazení odpovědi</button>`;
+                            casovacNastavovatko(temaNum, otaazkaNum, druhOtazky);
+                        };
+                        imgc.src = imageUrl;
+                    };
+                    imgb.src = imageUrl;
+                };
+                imga.src = imageUrl;
+            }else{
+                document.querySelector(`.hra`).innerHTML = `<div class="ZobrazenaOtazka"><a>${data[thema][othazka][(2 * druhOtazky)]}</a></div><div class="progressBar"></div> <button class="tlacitkoReseni" onclick="zobrazOdpoved(${temaNum}, ${otaazkaNum}, ${druhOtazky})">Zobrazení odpovědi</button>`;
+                casovacNastavovatko(temaNum, otaazkaNum, druhOtazky);
+            }
+        }else{
+            zobrazOtazku(temaNum, otaazkaNum); 
+        }
+    }
+}
+function casovacNastavovatko(temaNum, otaazkaNum, druhOtazky){
+    prubehTime = 0;
+    timeSpoustec = 1;
+    document.documentElement.style.setProperty('--progressAlign', String(`right`));
+    document.documentElement.style.setProperty('--progressColor', String(`lawngreen`));
+    casovac(temaNum, otaazkaNum, druhOtazky);
+}
+function zobrazOdpoved(temaNum, otaazkaNum, druh){
+    let thema = `tema${temaNum}`;
+    let othazka;
+    if(otaazkaNum === 0){
+        othazka = `speacialni_otazka`;
+    }else{
+        othazka = `otazka_${otaazkaNum}`;
+    }
+    if(vyprchek === 0){
+        timeSpoustec = 0;
+        if(data["povoleniObrazku"] === true){
+            imageUrl = `${data["slozkaObrazku"]}/${temaNum}${otaazkaNum}${druh}.jpeg`;
+            let imga = new Image();
+            imga.onload = function() {
+                document.querySelector(`.hra`).innerHTML = `<div class="ZobrazenaOtazkaImg"><a>${data[thema][othazka][(2 * druh)]}</a><br><img style="max-height: 10.5em;" src="${imga.src}"/></div><div class="Reseni"><span style="background-color: white;"> ${data[thema][othazka][(2 * druh)+ 1]} </span></div><div class="tlacitkaReseni"><button class="tlacitkoSpravneDobre" style="background-color: greenyellow;" onclick="SpravnaOdpoved(${temaNum}, ${otaazkaNum})">Dobře</button><button class="tlacitkoSpravneDobre" style="background-color:red; color: white;" onclick="SpatnaOdpoved()">Špatně</button></div>`;
+            };
+            imga.onerror = function() {
+                imageUrl = `${data["slozkaObrazku"]}/${temaNum}${otaazkaNum}${druh}.jpg`;
+                let imgb = new Image();
+                imgb.onload = function() {
+                    document.querySelector(`.hra`).innerHTML = `<div class="ZobrazenaOtazkaImg"><a>${data[thema][othazka][(2 * druh)]}</a><br><img style="max-height: 10.5em;" src="${imgb.src}"/></div><div class="Reseni"><span style="background-color: white;"> ${data[thema][othazka][(2 * druh)+ 1]} </span></div><div class="tlacitkaReseni"><button class="tlacitkoSpravneDobre" style="background-color: greenyellow;" onclick="SpravnaOdpoved(${temaNum}, ${otaazkaNum})">Dobře</button><button class="tlacitkoSpravneDobre" style="background-color:red; color: white;" onclick="SpatnaOdpoved()">Špatně</button></div>`;
+                };
+                imgb.onerror = function() {
+                    imageUrl = `${data["slozkaObrazku"]}/${temaNum}${otaazkaNum}${druh}.png`;
+                    let imgc = new Image();
+                    imgc.onload = function() {
+                        document.querySelector(`.hra`).innerHTML = `<div class="ZobrazenaOtazkaImg"><a>${data[thema][othazka][(2 * druh)]}</a><br><img style="max-height: 10.5em;" src="${imgc.src}"/></div><div class="Reseni"><span style="background-color: white;"> ${data[thema][othazka][(2 * druh)+ 1]} </span></div><div class="tlacitkaReseni"><button class="tlacitkoSpravneDobre" style="background-color: greenyellow;" onclick="SpravnaOdpoved(${temaNum}, ${otaazkaNum})">Dobře</button><button class="tlacitkoSpravneDobre" style="background-color:red; color: white;" onclick="SpatnaOdpoved()">Špatně</button></div>`;
+                    };
+                    imgc.onerror = function() {
+                        document.querySelector(`.hra`).innerHTML = `<div class="ZobrazenaOtazka"><a>${data[thema][othazka][(2 * druh)]}</a></div><div class="Reseni">${data[thema][othazka][(2 * druh)+ 1]}</div><div class="tlacitkaReseni"><button class="tlacitkoSpravneDobre" style="background-color: greenyellow;" onclick="SpravnaOdpoved(${temaNum}, ${otaazkaNum})">Dobře</button><button class="tlacitkoSpravneDobre" style="background-color:red; color: white;" onclick="SpatnaOdpoved()">Špatně</button></div>`;
+                    };
+                    imgc.src = imageUrl;
+                };
+                imgb.src = imageUrl;
+            };
+            imga.src = imageUrl;
+        }else{
+            document.querySelector(`.hra`).innerHTML = `<div class="ZobrazenaOtazka"><a>${data[thema][othazka][(2 * druh)]}</a></div><div class="Reseni">${data[thema][othazka][(2 * druh)+ 1]}</div><div class="tlacitkaReseni"><button class="tlacitkoSpravneDobre" style="background-color: greenyellow;" onclick="SpravnaOdpoved(${temaNum}, ${otaazkaNum})">Dobře</button><button class="tlacitkoSpravneDobre" style="background-color:red; color: white;" onclick="SpatnaOdpoved()">Špatně</button></div>`;
+        }
+
+        
+    }else{
+        if(data["povoleniObrazku"] === true){
+            imageUrl = `${data["slozkaObrazku"]}/${temaNum}${otaazkaNum}${druh}.jpeg`;
+            let imga = new Image();
+            imga.onload = function() {
+                document.querySelector(`.hra`).innerHTML = `<div class="ZobrazenaOtazkaImg"><a>${data[thema][othazka][(2 * druh)]}</a><br><img style="max-height: 10.5em;" src="${imga.src}"/></div><div class="progressBar"></div><div class="vyprseniCasu">VYPRŠEL ČAS</div>`;
+            };
+            imga.onerror = function() {
+                imageUrl = `${data["slozkaObrazku"]}/${temaNum}${otaazkaNum}${druh}.jpg`;
+                let imgb = new Image();
+                imgb.onload = function() {
+                    document.querySelector(`.hra`).innerHTML = `<div class="ZobrazenaOtazkaImg"><a>${data[thema][othazka][(2 * druh)]}</a><br><img style="max-height: 10.5em;" src="${imgb.src}"/></div><div class="progressBar"></div><div class="vyprseniCasu">VYPRŠEL ČAS</div>`;
+                };
+                imgb.onerror = function() {
+                    imageUrl = `${data["slozkaObrazku"]}/${temaNum}${otaazkaNum}${druh}.png`;
+                    let imgc = new Image();
+                    imgc.onload = function() {
+                        document.querySelector(`.hra`).innerHTML = `<div class="ZobrazenaOtazkaImg"><a>${data[thema][othazka][(2 * druh)]}</a><br><img style="max-height: 10.5em;" src="${imgc.src}"/></div><div class="progressBar"></div><div class="vyprseniCasu">VYPRŠEL ČAS</div>`;
+                    };
+                    imgc.onerror = function() {
+                        document.querySelector(`.hra`).innerHTML = `<div class="ZobrazenaOtazka"><a>${data[thema][othazka][(2 * druh)]}</a></div><div class="progressBar"></div><div class="vyprseniCasu">VYPRŠEL ČAS</div>`;
+                    };
+                    imgc.src = imageUrl;
+                };
+                imgb.src = imageUrl;
+            };
+            imga.src = imageUrl;
+        }else{
+            document.querySelector(`.hra`).innerHTML = `<div class="ZobrazenaOtazka"><a>${data[thema][othazka][(2 * druh)]}</a></div><div class="progressBar"></div><div class="vyprseniCasu">VYPRŠEL ČAS</div>`;
+        }
+        vyprchek = 0;
+        timeSpoustec = 2;
+        prubehTime = 0;
+    }
+}
+function SpravnaOdpoved(temaNum, otaazkaNum){
+    let thema = `tema${temaNum}`;
+    let othazka;
+    if(otaazkaNum === 0){
+        othazka = `speacialni_otazka`;
+    }else{
+        othazka = `otazka_${otaazkaNum}`;
+    }
+    data[thema][othazka][1] = true;
+    bodyTymy[1 + ((aktPoradiTym - 1)*2)] = bodyTymy[1 + ((aktPoradiTym - 1)*2)] + data[thema][othazka][0];
+    data[thema][othazka].push(aktPoradiTym);
+    statistikyDobre[aktPoradiTym - 1] = statistikyDobre[aktPoradiTym - 1] + 1;
+    prubehTime = 0;
+    akcePriDokoncovaniOdpovedi();
+}
+function SpatnaOdpoved(){    
+    statistikySpatne[aktPoradiTym - 1] = statistikySpatne[aktPoradiTym - 1] + 1;
+    prubehTime = 0;
+    akcePriDokoncovaniOdpovedi();
+}
+function akcePriDokoncovaniOdpovedi(){
+    if(aktPoradiTym === (bodyTymy.length / 2)){
+        aktPoradiTym = 1;
+    }else{
+        aktPoradiTym = aktPoradiTym + 1;
+    }
+    zobrazenitymu();
+    zobrazeniotazek();
+}
+let prubehTime;
+let odpocetTime;
+let vyprchek = 0;
+function casovac(temaNum, otaazkaNum, druhOtazky){
+    if(odpocetTime != 0 ){
+        if(timeSpoustec === 1){
+            if(prubehTime != odpocetTime + 0.005){
+                prubehTime = prubehTime + 0.005;
+                document.documentElement.style.setProperty('--progressWidth', String(`${((((prubehTime - 0.005)/ (odpocetTime)))*80)}%`));
+                document.querySelector('.progressBar').textContent =`${(odpocetTime - (prubehTime - 0.005)).toFixed(0)}s`;
+                if(prubehTime < odpocetTime + 0.005){
+                    setTimeout(casovac, 5, temaNum, otaazkaNum, druhOtazky);
+                }else{
+                    document.documentElement.style.setProperty('--progressWidth', String(`${(((prubehTime / (odpocetTime + 0.005)))*80)}%`));
+                    document.documentElement.style.setProperty('--progressAlign', String(`center`));
+                    vyprchek = 1;
+                    zobrazOdpoved(temaNum, otaazkaNum, druhOtazky);
+                    document.querySelector('.progressBar').textContent ='Čas vypršel';
+                    document.documentElement.style.setProperty('--progressColor', String(`red`));
+                    document.documentElement.style.setProperty('--progressAlign', String(`right`));
+                    casovac(temaNum, otaazkaNum, druhOtazky);
+                }                
+            }
+        } else if(timeSpoustec === 2){
+            if(prubehTime != 3 + 0.005){
+                prubehTime = prubehTime + 0.005;
+                document.documentElement.style.setProperty('--progressWidth', String(`${(((prubehTime - 0.005)/3))*80}%`));
+                document.querySelector('.progressBar').textContent =`${(3- (prubehTime - 0.005)).toFixed(0)}s`;
+                if(prubehTime < 3 + 0.005){
+                    setTimeout(casovac, 5, temaNum, otaazkaNum, druhOtazky);
+                }else{
+                    timeSpoustec = 0;
+                    SpatnaOdpoved();
+                }                
+            }
+        }
+    }else{
+        document.documentElement.style.setProperty('--progressColor', String(`white`));
+    }
+} 
+        </script>
+    </head> 
+    <body>
+        <div class="moznostiselector"></div>
+        <div class="hra"></div>
+        <div class="tymy"></div>
+    </body> 
+</html>

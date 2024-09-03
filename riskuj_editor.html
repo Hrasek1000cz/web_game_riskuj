@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Riskuj</title>
+        <style>
+            body{
+    font-size: 2em;
+    font-family: Calibri; 
+}
+input{
+    font-size: 1em;
+}
+label{
+    order: 1;
+}
+button{
+    font-size: 1em;
+}
+.bodyInput{
+    width: 1.5em;
+}
+.otazkaInput{
+    width: 51em;
+    overflow-y: scroll;
+    font-size: 0.95em;
+}  
+.plusMinusButton{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: solid 1px black;
+}
+.plusMinusButton:hover{
+    border-color: white;
+    color: white;
+}
+textarea{
+    font-size: 0.95em; 
+    font-family: Calibri; 
+    order: 2;
+}
+textarea:hover{
+    border-color: red;
+    border-width: 2px;
+}
+input:hover{
+    border-color: red;
+    border-width: 2px;
+}
+
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <meta charset="utf-8">
+        <script>
+function kontrolasouboru(){
+    const fileInput = document.getElementById('zvolenisouboru');
+    const file = fileInput.files[0];
+    if (file) { 
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            try {
+                data = JSON.parse(event.target.result);
+                nastavovaniPoctuTematAMoznosti()
+                zobrazeniOtazek();
+            } catch (error) {
+                console.error('Error při parsováníJSON:', error);
+            }
+        };
+        reader.onerror = function(event) {
+            console.error('Error při čtení souboru:', event);
+        };
+        reader.readAsText(file);
+    } else {
+        console.error('Nevybrán žádný soubor');
+    }
+} 
+
+
+let HlavniMnozstviTemat = 0;
+let VsechnyMoznostiOtazek = [];
+function nastavovaniPoctuTematAMoznosti(){
+    HlavniMnozstviTemat = 0;
+    VsechnyMoznostiOtazek = [];
+    let temataNum = 1;
+    while(data[`tema${temataNum}`] != null){
+        HlavniMnozstviTemat = HlavniMnozstviTemat + 1;
+        temataNum = temataNum + 1;
+    }
+
+    let odpocitavac1 = 1;
+    while(odpocitavac1 <= HlavniMnozstviTemat){
+        VsechnyMoznostiOtazek.push([]);
+        odpocitavac1 = odpocitavac1 + 1;
+    }
+    let odpocitavac2 = 1;
+    while(odpocitavac2 <= HlavniMnozstviTemat){
+        let temaMoznosti = `tema${odpocitavac2}`;
+        let odpocitavac3 = 1;
+        let otazkaMoznosti;
+        while(odpocitavac3 <= 6){
+            if(odpocitavac3 === 1){
+                otazkaMoznosti = `speacialni_otazka`;
+            }else{
+                otazkaMoznosti = `otazka_${odpocitavac3 - 1}`;
+            }
+            VsechnyMoznostiOtazek[odpocitavac2 - 1].push([]);
+            let odpocitavac4 = 2;
+            let pocetMoznosti = 0;
+            while(data[temaMoznosti][otazkaMoznosti][odpocitavac4] != null){
+                pocetMoznosti = pocetMoznosti + 1;
+                odpocitavac4 = odpocitavac4 + 2;
+            }
+            VsechnyMoznostiOtazek[odpocitavac2 - 1][odpocitavac3 - 1].push(pocetMoznosti);
+            odpocitavac3 = odpocitavac3 + 1;
+        }
+        odpocitavac2 = odpocitavac2 + 1;
+    }
+}
+
+function zobrazeniOtazek(){
+    let temaNum = 0;
+    let tema;
+    let zobrazko = `<br>`;
+    while (temaNum < HlavniMnozstviTemat){
+        temaNum = temaNum + 1;
+        tema = `tema${temaNum}`;
+        zobrazko = zobrazko + `
+            <div><strong>${temaNum}. téma:</strong></div>
+            <div style="margin-left: 1em;">Název ${temaNum}. tématu: <input id="${temaNum}" value="${data[tema]["nazev_tematu"]}"></input></div>
+        `;
+        let otazkaNum = -1;
+        let otazka;
+        let otazkomat;
+        while(otazkaNum < 5){
+            otazkaNum = otazkaNum + 1;
+            if(otazkaNum === 0){
+                otazka = "speacialni_otazka";
+                otazkomat = "Speciální otázka";
+                zobrazko = zobrazko + `    
+                <div style="margin-left: 1em;"><strong>Speciální otázka</strong>(${temaNum}. téma)</div>`;
+            }else{
+                otazka = `otazka_${otazkaNum}`;
+                otazkomat = `${otazkaNum}. otázka`;
+                zobrazko = zobrazko + `    
+                <div style="margin-left: 1em;"><strong>${otazkaNum}. otázka</strong>(${temaNum}. téma)</div>`;
+            }
+            zobrazko = zobrazko +  `
+                <div style="margin-left: 2em;">Počet bodů za otázku: <input <input id="${temaNum}${otazkaNum}0" class="bodyInput" value="${data[tema][otazka][0]}"></input></div>
+                `;
+                let odpocitavadlo1 = 1;
+                zobrazko = zobrazko + `<div id="div${temaNum}${otazkaNum}" style="margin-left: 3em;">`
+                while(odpocitavadlo1 <= VsechnyMoznostiOtazek[temaNum - 1][otazkaNum][0]){
+                    zobrazko = zobrazko + `  
+                    <div><strong>${odpocitavadlo1}. možnost</strong> (${temaNum}. téma, ${otazkomat}) (Název případného obrázku pro tuto otázku: <strong>${temaNum}${otazkaNum}${odpocitavadlo1}.jpeg</strong>)</div>              
+                    <div style="margin-left: 1em; display: flex;flex-direction: column;"><label><strong>Otázka: </strong></label><textarea id="${temaNum}${otazkaNum}${odpocitavadlo1}0" placeholder="Napiš sem tvojí otázku...">${data[tema][otazka][(odpocitavadlo1 * 2)]}</textarea></div>
+                    <div style="margin-left: 1em; display: flex;flex-direction: column;"><label><strong>Odpověď: </strong></label><textarea id="${temaNum}${otazkaNum}${odpocitavadlo1}1" placeholder="Napiš sem tvoji odpověď na otázku...">${data[tema][otazka][1 + (odpocitavadlo1 * 2)]}</textarea></div><br>
+                    `;
+                    odpocitavadlo1 = odpocitavadlo1 + 1;
+                }
+
+                zobrazko = zobrazko + `<div style="width: 50%;  display: flex;">     <div class="plusMinusButton" style="background-color: lawngreen;" onclick="pridaniMoznosti(${temaNum}, ${otazkaNum})">Přidat možnost</div>     <div class="plusMinusButton"  style="background-color: red;"onclick="odebraniMoznosti(${temaNum}, ${otazkaNum})">Odebrat možnost</div>     </div></div><br>
+                `;
+        }
+        }zobrazko = zobrazko + `<div style="width: 50%;  display: flex;"><div class="plusMinusButton" style="background-color: lawngreen;" onclick="pridaniTematu(${temaNum})">Přidat téma</div>     <div class="plusMinusButton"  style="background-color: red;"onclick="odebraniTematu(${temaNum})">Odebrat téma</div></div>`;
+
+    document.body.innerHTML = `
+    <div>Povolení obrázků (true/false): <input id="obrPovolenka" value="${data["povoleniObrazku"]}"></input></div>
+    <div>Název složky s obrázky: <input id="nazevSlozky" value="${data["slozkaObrazku"]}"></input></div>
+
+    <br><hr><br>
+    ` + zobrazko + button;
+}
+
+function pridaniTematu(temaNum0){
+    Inputka();
+    let tema = `tema${temaNum0 + 1}`;
+    data[tema] = {"nazev_tematu": `název ${temaNum0 + 1}. tématu`,"speacialni_otazka": [10, false,"","","","","",""],"otazka_1": [1, false,"","","", "","",""],"otazka_2": [2, false,"","","","","",""],"otazka_3": [3, false,"","","","","",""],"otazka_4": [4, false,"","","","","",""],"otazka_5": [5, false,"","","","","",""]};
+    nastavovaniPoctuTematAMoznosti();
+    console.log(data);
+    zobrazeniOtazek();
+}
+function odebraniTematu(temaNum0){
+    if(temaNum0 != 1){
+        Inputka();
+        let tema = `tema${temaNum0}`;
+        delete data[tema];
+        nastavovaniPoctuTematAMoznosti()
+        console.log(data);
+        zobrazeniOtazek();
+    }
+}
+
+function pridaniMoznosti(temaNum0, otazkaNum0){
+    Inputka();
+    let tema0 = `tema${temaNum0}`;
+    let otazka0;
+    if(otazkaNum0 === 0){
+        otazka0 = "speacialni_otazka";
+    }else{
+        otazka0 = `otazka_${otazkaNum0}`;
+    }
+    VsechnyMoznostiOtazek[temaNum0 - 1][otazkaNum0][0] = VsechnyMoznostiOtazek[temaNum0 - 1][otazkaNum0][0] + 1;
+    data[tema0][otazka0].push("");
+    data[tema0][otazka0].push("");
+    zobrazeniOtazek();
+}
+function odebraniMoznosti(temaNum0, otazkaNum0){
+    if(VsechnyMoznostiOtazek[temaNum0 - 1][otazkaNum0][0] != 1){
+        Inputka();
+        let tema0 = `tema${temaNum0}`;
+        let otazka0;
+        if(otazkaNum0 === 0){
+            otazka0 = "speacialni_otazka";
+        }else{
+            otazka0 = `otazka_${otazkaNum0}`;
+        }
+        VsechnyMoznostiOtazek[temaNum0 - 1][otazkaNum0][0] = VsechnyMoznostiOtazek[temaNum0 - 1][otazkaNum0][0] - 1;
+        data[tema0][otazka0].pop();
+        data[tema0][otazka0].pop();
+        zobrazeniOtazek();
+    }
+}
+
+
+function Inputka(){
+    
+    if(document.getElementById("obrPovolenka").value === "true"){
+        data["povoleniObrazku"] = true;
+    }else{
+        data["povoleniObrazku"] = false;
+    }
+    data["slozkaObrazku"] = document.getElementById("nazevSlozky").value;
+
+
+    let temaNum = 1;
+    while(temaNum <= HlavniMnozstviTemat){
+        let tema = `tema${temaNum}`;
+        data[tema]["nazev_tematu"] = document.getElementById(`${temaNum}`).value;
+        let otazkaNum = 0;
+        while(otazkaNum < 6){
+            if(otazkaNum === 0){
+                otazka = "speacialni_otazka";
+            }else{
+                otazka = `otazka_${otazkaNum}`;
+            }
+            while(data[tema][otazka].length != 0){
+                data[tema][otazka].pop();
+            }
+            data[tema][otazka].push(parseInt(document.getElementById(`${temaNum}${otazkaNum}0`).value, 10));
+            data[tema][otazka].push(false);
+            let odpocitavacka1 = 1;
+            while(document.getElementById(`${temaNum}${otazkaNum}${odpocitavacka1}0`) !=  null){
+                data[tema][otazka].push(document.getElementById(`${temaNum}${otazkaNum}${odpocitavacka1}0`).value);
+                data[tema][otazka].push(document.getElementById(`${temaNum}${otazkaNum}${odpocitavacka1}1`).value);
+                odpocitavacka1 = odpocitavacka1 + 1;
+            }
+            otazkaNum = otazkaNum + 1;
+        }
+        temaNum = temaNum + 1;
+    }
+}
+const button = `<div onclick="zpravcovaniDatZInputu()" style="border: solid; text-align: center;" >Potvrdit a odeslat</div>`;
+function zpravcovaniDatZInputu(){
+    Inputka();
+    fechovac();
+}
+function fechovac(){
+    document.body.innerHTML = `${JSON.stringify(data)}`;
+}
+let data = {};
+function tvorbaNovehoSouboru(){
+    let temaNum = 0;
+    let tema = `tema${temaNum + 1}`;
+    data["povoleniObrazku"] = true;
+    data["slozkaObrazku"] = "složka_s_obrázky";
+    data[tema] = {"nazev_tematu": `název ${temaNum + 1}. tématu`,"speacialni_otazka": [10, false,"","","","","",""],"otazka_1": [1, false,"","","", "","",""],"otazka_2": [2, false,"","","","","",""],"otazka_3": [3, false,"","","","","",""],"otazka_4": [4, false,"","","","","",""],"otazka_5": [5, false,"","","","","",""]};
+    nastavovaniPoctuTematAMoznosti();
+    zobrazeniOtazek();
+}
+        </script>
+    </head>
+  <body>
+    <div style="margin-top: 15%;width: 100%; height: 5%; display: flex; align-items: center; justify-content: center; font-size: 1em;">Tvorba nového souboru (potřeba vytvořit soubor.txt do kterého pak zkopíruješ text)</div>
+    <div style="margin-top: 1%;width: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.7em;"><button class="potvrzovac_button" onclick="tvorbaNovehoSouboru()">Vytvořit nový soubor</button></div>
+    <br>
+    <hr>
+    <div style="margin-top: 4%;width: 100%; height: 5%; display: flex; align-items: center; justify-content: center; font-size: 1em;">Zvolení datového souboru.txt k úpravě</div>
+    <div style="margin-top: 1%;width: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.7em;"><input type="file" class="vyber" id="zvolenisouboru"></input></div>
+    <div style="margin-top: 1%;width: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.7em;"><button class="potvrzovac_button" onclick="kontrolasouboru()">Začít upravovat soubor</button></div>
+  </body>
+</html>  
