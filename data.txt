@@ -1,0 +1,118 @@
+{
+    "povoleniObrazku": true,
+    "slozkaObrazku": "aktual",
+    "tema1": {
+        "nazev_tematu": "Poznávačka ptáků",
+        "speacialni_otazka": [
+            10, false,
+            "Který pták je známý svou neobyčejnou schopností napodobovat zvuky motorových pil, fotoaparátů a dalších lidských zařízení a pochází z Austrálie? 1",
+            "Lirovej menura (Menura novaehollandiae) 1",
+            "Jak se nazývá pták, který žije v tropických lesích Střední a Jižní Ameriky, má extrémně dlouhý ocas a je známý svou skvělou schopností manévrovat v hustém lese? 2",
+            "Quetzal (Pharomachrus mocinno) 2",
+            "Který pták je považován za jednoho z nejvzácnějších na světě, žije na Novém Zélandu, je nelétavý a jeho populace se díky ochranářským snahám pomalu zotavuje? 3", 
+            "Kakapo (Strigops habroptilus) 3"
+        ],
+        "otazka_1": [
+            1, false,
+            "Jak se jmenuje nejrozšířenější pták na světě, který je často spojován s lidskými obydlími a je také spojen s jedním pořekadlem?",
+            "Vlaštovka ",
+            "Který pták je známý svým hlasitým křikem, kladením vajec do cizích hnízd a má červený zobák?",
+            "Kukačka ",
+            "Jak se nazývá bílý pták, který má dlouhý krk a často se vyskytuje na vodních plochách?",
+            "Labuť "
+        ],
+        "otazka_2": [
+            2, false,
+            "Jak se jmenuje druh ptáka, který je symbolem velkých měst a má šedé peří s bílými skvrnami na křídlech?",
+            "Holub ",
+            "Který pták je známý svou modrou barvou a často se vyskytuje na loukách a v zahradách?",
+            "Modrásek ",
+            "Jaký pták je známý tím, že může opakovat lidské řeči?",
+            "Papoušek"
+        ],
+        "otazka_3": [
+            3, false,
+            "Jak se nazývá pták s dlouhým zobákem, který se živí rybami a žije poblíž vodních ploch?",
+            "Volavka",
+            "Který pták je známý svým pestrým zbarvením a často se vyskytuje v deštných pralesích?",
+            "Papoušek ara ",
+            "Jak se jmenuje druh ptáka, který je známý svým prodlouženým ocasem a vyskytuje se v Americe?",
+            "Kolibřík "
+        ],
+        "otazka_4": [
+            4, false,
+            "Jaký je druh velkého ptáka, který žije v Arktidě a má bílé peří?",
+            "Polární sova",
+            "Jak se jmenuje pták, který je nejrychlejším létajícím tvorem na světě?",
+            "Sokol stěhovavý",
+            "Který pták je známý svými výraznými modrými a zelenými peřími a žije v Africe?",
+            "Motýlák"
+        ],
+        "otazka_5": [
+            5, false,
+            "Jak se jmenuje pták, který má většinou hnědé peří, dlouhý zobák a je známý svou schopností loveckému rouchu?",
+            "Jestřáb",
+            "Jak se nazývá tento pták? A A A A A A A A A A A A A AA A A A A A A A A AA A A A A A A A A A A A A A A AA  A AA  A A A A A A A A A A A A A AA A A A A A A A A AA A A A",
+            "Pštros",
+            "Jak se nazývá druh ptáka, který je známý svým bílým peřím a vyskytuje se v jižních mořích?",
+            "Albatros"
+        ]
+    },
+    "tema2": {
+        "nazev_tematu": "Poznávačka hmyzu",
+        "speacialni_otazka": [
+            10, false,
+            "Jaký druh brouka má unikátní schopnost přežít i po ponoření do kapalného dusíku díky speciální struktuře svého těla?",
+            "Rybák vodní (Crysomelidae)",
+            "Který hmyz je jediným známým tvorem schopným syntetizovat celulózu, kterou využívá k budování svých kolonií?",
+            "Termit (Isoptera) ",
+            "Jaký je název druhu hmyzu, který využívá své zadní nohy k produkci zvukových signálů, které jsou slyšitelné až na několik kilometrů?",
+            "Kobylka obrovská "
+        ],
+        "otazka_1": [
+            1, false,
+            "Jak se nazývá hmyz, který je známý svou schopností vytvářet med? ",
+            "Včela ",
+            "Který hmyz má krásná barevná křídla a je často vidět létat v zahradách?",
+            "Motýl ",
+            "Jak se nazývá hmyz, který skáče a vydává zvuky třením svých zadních nohou o křídla?",
+            "Cvrček "
+        ],
+        "otazka_2": [
+            2, false,
+            "Který hmyz je známý svou schopností měnit barvy a tvar, aby se maskoval před predátory?",
+            "Kudlanka",
+            "Jak se nazývá hmyz, který žije v koloniích a je známý svou organizovanou strukturou?",
+            "Mravenec",
+            "Který hmyz je známý svou schopností nést břemena, která jsou několikanásobně těžší než jeho vlastní tělo?",
+            "Brouk nosorožík "
+        ],
+        "otazka_3": [
+            3, false,
+            "Jak se jmenuje hmyz, který je známý svým dlouhým tělem a mnoha nohama?",
+            "Stonožka",
+            "Který hmyz je známý svými složenými očima a schopností létat ve vzduchu dlouhé vzdálenosti?",
+            "Vážka",
+            "Jak se nazývá hmyz, který žije v dřevě a může způsobit značné škody na budovách?",
+            "Termit"
+        ],
+        "otazka_4": [
+            4, false,
+            "Jaký hmyz má žihadlo a je často považován za škůdce, přestože hraje klíčovou roli v ekosystémech?",
+            "Vosa",
+            "Který hmyz je známý svým jasně červeným tělem s černými tečkami a je považován za symbol štěstí?",
+            "Beruška",
+            "Jaký hmyz je známý svým podlouhlým tělem, anténami a schopností šířit nemoci jako například malárii?",
+            "Komár"
+        ],
+        "otazka_5": [
+            5, false,
+            "Jak se jmenuje hmyz, který má světélkující orgány a používá světlo ke komunikaci a přilákání partnerů?",
+            "Světluška ",
+            "Který hmyz je známý svým extrémně hlasitým zvukem, který vydává při námluvách, a má životní cyklus trvající 13 nebo 17 let?",
+            "Cikáda ",
+            "Jak se nazývá hmyz, který je známý svou symbiotickou vztah s mravenci, kdy mravenci chrání tento hmyz výměnou za sladké výměšky?",
+            "Mšice"
+        ]
+    }
+}
